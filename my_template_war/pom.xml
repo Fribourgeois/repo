@@ -1,0 +1,185 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+	<modelVersion>4.0.0</modelVersion>
+	<!-- =============================================================== -->
+	<!-- Informations du projet -->
+	<!-- =============================================================== -->
+
+	<!-- ===== Informations parent ===== -->
+	<parent>
+		<groupId>my_template_parent</groupId>
+		<artifactId>my_template_parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../my_template_parent/pom.xml</relativePath>
+	</parent>
+
+
+	<!-- ===== Informations Maven ===== -->
+	<groupId>my_template_war</groupId>
+	<artifactId>my_template_war</artifactId>
+	<version>${app.version}</version>
+	<packaging>war</packaging>
+
+	<!-- ===== Informations générales ===== -->
+	<name>MyTest</name>
+	<description>Description de mon application ici</description>
+	<url>http://localhost:8080/test/</url>
+
+	<!-- ===== Organisation ===== -->
+	<organization>
+		<name>Borcard Entreprise</name>
+		<url>http://www.borcard.ch</url>
+	</organization>
+
+	<!-- =============================================================== -->
+	<!-- Properties -->
+	<!-- =============================================================== -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tomcat-maven-plugin.version>2.0</tomcat-maven-plugin.version>
+		<junit-maven-plugin.version>3.8.1</junit-maven-plugin.version>
+		<env>test</env>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>my_test_ejb</groupId>
+			<artifactId>my_test_ejb</artifactId>
+			<type>ejb</type>
+			<version>${app.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>my_test_domain</groupId>
+			<artifactId>my_test_domain</artifactId>
+			<version>${app.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>javax.ejb-api</artifactId>
+			<version>3.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-maven-plugin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>9.0.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>6.0.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- =============================================================== -->
+	<!-- Profils -->
+	<!-- =============================================================== -->
+	<!-- <profiles> Profil pour l'environnement de test <profile> <id>test</id> 
+		<build> <resources> <resource> <directory>src/main/resources/config-${env}.properties</directory> 
+		<filtering>true</filtering> </resource> </resources> </build> </profile> -->
+
+	<!-- Profil pour l'environnement de production <profile> <id>prod</id> <build> 
+		<resources> <resource> <directory>src/main/resources/config-${env}.properties</directory> 
+		<filtering>true</filtering> </resource> </resources> </build> </profile> 
+		</profiles> -->
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<filters>
+			<filter>src/main/resources/config-${env}.properties</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<webXml>WebContent\WEB-INF\web.xml</webXml>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>WebContent</directory>
+						</resource>
+					</webResources>
+				</configuration>
+
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<!-- Tomcat plugin -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>tomcat-server</server>
+					<username>tomcat</username>
+					<password>tomcat</password>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+
+</project>
+
+
